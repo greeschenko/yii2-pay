@@ -1,6 +1,6 @@
 Yii2 Pay
 ========
-yii2 payment aggregator includes a PayPal, Qiwi, YandexMoney, Visa and Mastercard 
+yii2 payment aggregator includes a PayPal, Qiwi, YandexMoney, Visa and Mastercard
 
 Installation
 ------------
@@ -29,3 +29,6 @@ Once the extension is installed, simply use it in your code by  :
 
 ```php
 <?= \greeschenko\pay\AutoloadExample::widget(); ?>```
+=======
+# yii2-pay
+yii2 payment aggregator includes a PayPal, Qiwi, YandexMoney, Visa and Mastercard
