@@ -25,10 +25,18 @@ to the require section of your `composer.json` file.
 Usage
 -----
 
-Once the extension is installed, simply use it in your code by  :
+add to you app config in components section
 
-```php
-<?= \greeschenko\pay\AutoloadExample::widget(); ?>```
-=======
-# yii2-pay
-yii2 payment aggregator includes a PayPal, Qiwi, YandexMoney, Visa and Mastercard
+```
+'components' => [
+    ...
+    'ppmoney'=>[
+        'class'=>'greeschenko\pay\components\PPmoney',
+        'client_id' => 'YOUR-CLIENT-ID-FROM-PAYPAL',
+        'client_secret' => 'YOUR-CLIENT-SECRET-FROM-PAYPAL',
+    ],
+    ...
+]
+```
+
+
