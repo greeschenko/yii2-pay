@@ -1,0 +1,21 @@
+{
+    "name": "greeschenko/yii2-pay",
+    "description": "yii2 payment aggregator includes a PayPal, Qiwi, YandexMoney, Visa and Mastercard ",
+    "type": "yii2-extension",
+    "keywords": ["yii2","extension"," payment"," PayPal"," Qiwi"," YandexMoney"," Visa"," Mastercard"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Oleksiy Hryshchenko",
+            "email": "greeschenko@gmail.com"
+        }
+    ],
+    "require": {
+        "yiisoft/yii2": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "greeschenko\\pay\\": ""
+        }
+    }
+}
