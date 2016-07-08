@@ -21,6 +21,9 @@ class PPmoney extends Component
 
     public $client_id;
     public $client_secret;
+    public $currency;
+    public $returnUrl;
+    public $canselUrl;
     public $config = [];
     private $apiContext; // paypal's API context
 
