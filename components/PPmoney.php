@@ -8,6 +8,8 @@ use yii\helpers\ArrayHelper;
 
 use PayPal\Rest\ApiContext;
 use PayPal\Auth\OAuthTokenCredential;
+use PayPal\Api\Payment;
+use PayPal\Exception\PaypalConnectionException;
 
 class PPmoney extends Component
 {
@@ -67,5 +69,23 @@ class PPmoney extends Component
     public function getContext()
     {
         return $this->apiContext;
+    }
+
+    /**
+     * get payment status
+     *
+     * @return json
+     */
+    public function getPaymentStatus($id)
+    {
+        try {
+            $payment = Payment::get($paymentId, $apiContext);
+        } catch (PayPalConnectionException $ex) {
+            echo '<pre>';
+            var_dump('Failure scenario '.$e);
+            echo $e;
+        }
+
+        return $payment;
     }
 }

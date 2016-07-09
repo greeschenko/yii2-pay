@@ -5,6 +5,7 @@ namespace greeschenko\pay\controllers;
 use Yii;
 use yii\web\Controller;
 use yii\helpers\Url;
+use yii\helpers\Html;
 use PayPal\Api\Payer;
 use PayPal\Api\Details;
 use PayPal\Api\Amount;
@@ -29,41 +30,58 @@ class PaypalController extends Controller
      *
      * @return redirect
      */
-    public function actionIndex()
+    public function actionIndex($descr,$items,$shipping=0,$shippingpers=false,$tax=0,$taxpers=false)
     {
+        $sum=0;
+        $ressum = 0;
+        $itemslist = [];
         $payer = new Payer();
         $payer->setPaymentMethod("paypal");
 
-        $item1 = new Item();
-        $item1->setName('Ground Coffee 40 oz')
-            ->setCurrency($this->module->ppmoney->currency)
-            ->setQuantity(1)
-            ->setSku("123123") // Similar to `item_number` in Classic API
-            ->setPrice(7.5);
-        $item2 = new Item();
-        $item2->setName('Granola bars')
-            ->setCurrency($this->module->ppmoney->currency)
-            ->setQuantity(5)
-            ->setSku("321321") // Similar to `item_number` in Classic API
-            ->setPrice(2);
+        foreach (json_decode($items,true) as $one) {
+            $item = new Item();
+            $item->setName($one['name'])
+                ->setCurrency($this->module->ppmoney->currency)
+                ->setQuantity($one['quantity'])
+                ->setSku($one['sku']) // Similar to `item_number` in Classic API
+                ->setPrice($one['price']);
+
+            $itemslist[] = $item;
+
+            $sum = $sum + ($one['price'] * $one['quantity']);
+        }
+
+        if ($shippingpers) {
+            $shipping = ($shipping * $sum) / 100;
+        }
+
+        if ($taxpers) {
+            $tax = ($tax * $sum) / 100;
+        }
+
+        $ressum = $sum + $shipping + $tax;
 
         $itemList = new ItemList();
-        $itemList->setItems(array($item1, $item2));
+        $itemList->setItems($itemslist);
 
         $details = new Details();
-        $details->setShipping(1.2)
-            ->setTax(1.3)
-            ->setSubtotal(17.50);
+        if ($shipping > 0) {
+            $details->setShipping($shipping);
+        }
+        if ($tax > 0) {
+            $details->setTax($tax);
+        }
+        $details->setSubtotal($sum);
 
         $amount = new Amount();
         $amount->setCurrency($this->module->ppmoney->currency)
-            ->setTotal(20)
+            ->setTotal($ressum)
             ->setDetails($details);
 
         $transaction = new Transaction();
         $transaction->setAmount($amount)
             ->setItemList($itemList)
-            ->setDescription("Payment description")
+            ->setDescription($descr)
             ->setInvoiceNumber(uniqid());
 
         $redirectUrls = new RedirectUrls();
@@ -78,9 +96,15 @@ class PaypalController extends Controller
 
         try {
             $payment->create($this->module->ppmoney->getContext());
-            echo '<pre>';
-            var_dump('Success scenario');
-            print_r(json_decode($payment,true));
+            $res = json_decode($payment,true);
+            foreach ($res['links'] as $one) {
+                if ($one['method'] == 'REDIRECT') {
+                    echo $one['href'];
+                    echo '</br>';
+                    header("Location: {$one['href']}");
+                    exit;
+                }
+            }
         } catch (PayPalConnectionException $e) {
             echo '<pre>';
             var_dump('Failure scenario '.$e);
@@ -88,21 +112,27 @@ class PaypalController extends Controller
         }
     }
 
-    /**
-     * return payment status for confirm
-     *
-     * @return string
-     */
-    public function actionStatus($id)
+    public function actionTest()
     {
-        try {
-            echo '<pre>';
-        } catch (PayPalConnectionException $e) {
-            echo '<pre>';
-            var_dump('Failure scenario '.$e);
-            echo $e;
-        }
-
-        return $payment;
+        echo Html::a('test pay',[
+            '/pay/paypal',
+            'descr' => 'Test payment',
+            'items' => json_encode([
+                [
+                    'name' => 'Test item 1',
+                    'quantity' => 1,
+                    'sku' => '23456',
+                    'price' => 34,
+                ],
+                [
+                    'name' => 'Test item 2',
+                    'quantity' => 3,
+                    'sku' => '23456',
+                    'price' => 10,
+                ],
+            ]),
+            'tax' => 15,
+            'taxpers' => true,
+        ]);
     }
 }
