@@ -12,7 +12,9 @@
     ],
     "require": {
         "yiisoft/yii2": "*",
-        "paypal/rest-api-sdk-php": "*"
+        "paypal/rest-api-sdk-php": "*",
+        "yandex-money/yandex-money-sdk-php": "*",
+        "fintech-fab/qiwi-sdk": "dev-master"
     },
     "autoload": {
         "psr-4": {
