@@ -79,7 +79,7 @@ class PPmoney extends Component
     public function getPaymentStatus($id)
     {
         try {
-            $payment = Payment::get($paymentId, $apiContext);
+            $payment = Payment::get($id, $this->apiContext);
         } catch (PayPalConnectionException $ex) {
             echo '<pre>';
             var_dump('Failure scenario '.$e);

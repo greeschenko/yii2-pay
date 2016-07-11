@@ -97,10 +97,12 @@ class PaypalController extends Controller
         try {
             $payment->create($this->module->ppmoney->getContext());
             $res = json_decode($payment,true);
+
+            echo '<pre>';
+            echo $this->module->ppmoney->getPaymentStatus($res['id']);
+            die;
             foreach ($res['links'] as $one) {
                 if ($one['method'] == 'REDIRECT') {
-                    echo $one['href'];
-                    echo '</br>';
                     header("Location: {$one['href']}");
                     exit;
                 }

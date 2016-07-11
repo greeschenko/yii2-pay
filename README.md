@@ -52,4 +52,42 @@ add to you app config in module section
 ],
 ```
 
+generate a payments links
 
+    PayPal
+
+    ```
+        echo Html::a('test pay',[
+            '/pay/paypal',
+            'descr' => 'Test payment',
+            'items' => json_encode([
+                [
+                    'name' => 'Test item 1',
+                    'quantity' => 1,
+                    'sku' => '23456',
+                    'price' => 34,
+                ],
+                [
+                    'name' => 'Test item 2',
+                    'quantity' => 3,
+                    'sku' => '23456',
+                    'price' => 10,
+                ],
+            ]),
+            'shipping' => 10,
+            'shippingpers' => false,
+            'tax' => 15,
+            'taxpers' => true,
+        ]);
+    ```
+
+check success payment in action
+
+```
+    public function actionSomeAction($paymentId)
+    {
+        ...
+        $res = Yii::$app->getModule('pay')->ppmoney->getPaymentStatus($paymentId);
+        ...
+    }
+```
