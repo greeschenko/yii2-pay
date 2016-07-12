@@ -16,7 +16,7 @@ use PayPal\Api\ItemList;
 use PayPal\Api\RedirectUrls;
 use PayPal\Exception\PaypalConnectionException;
 
-class PaypalController extends Controller
+class QiwiController extends Controller
 {
     public $module;
 
