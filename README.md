@@ -38,12 +38,34 @@ add to you app config in module section
                 'client_id' => 'YOUR_PAYPAL_CLIENT_ID',
                 'client_secret' => 'YOUR_PAYPAL_SECRET',
                 'currency' => 'USD',
-                'returnUrl' => '/example/action',
+                'returnUrl' => '/example/action', //success action
                 'canselUrl' => '/example/action2',
                 'config' => [
                     'mode'                      => 'sandbox', // development (sandbox) or production (live) mode
                     'http.ConnectionTimeOut'    => 30,
                     'http.Retry'                => 1,
+                ],
+            ],
+            'ymmoney'=>[
+                'class'=>'greeschenko\pay\components\YMmoney',
+                'client_id'=>'YOUR_YANDEXMONEY_CLIENT_ID',
+                'code'=>'YOUR_YANDEXMONEY_CLIENT_CODE',
+                'client_secret'=>'YOUR_YANDEXMONEY_CLIENT_SECRET',
+                'redirect_uri'=>'/example/action3', //success action
+                'to'=>'', //acount number, phone or email
+                'istest'=>true, //true or false
+                'ext_auth_success_uri'=>'', //success action
+                'ext_auth_fail_uri'=>'', //fail action
+            ],
+            'qmmoney'=>[
+                'class'=>'greeschenko\pay\components\QMmoney',
+                'config'=>[
+                    'gateUrl'  => 'url-to-qiwi-gate',
+                    'provider' => [
+                        'id'       => 'your-qiwi-gate-id',
+                        'password' => 'your-qiwi-gate-password',
+                        'key'      => 'your-qiwi-gate-key',
+                    ],
                 ],
             ],
         ],

@@ -20,6 +20,26 @@ class YMComponent extends Component
     /** @var null|string */
     public $client_secret = null;
 
+    /**
+     * to - acount number, phone or email
+     *
+     * @var mixed
+     * @access public
+     */
+    public $to;
+
+    /**
+     * istest - define testing payment
+     *
+     * @var boolean
+     * @access public
+     */
+    public $istest = true;
+
+    public $ext_auth_success_uri;
+
+    public $ext_auth_fail_uri;
+
     /** @var  \YandexMoney\API */
     private $api = null;
 
