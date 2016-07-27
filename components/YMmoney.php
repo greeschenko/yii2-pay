@@ -6,13 +6,10 @@ use \YandexMoney\API;
 use yii\base\Component;
 use yii\base\InvalidConfigException;
 
-class YMComponent extends Component
+class YMmoney extends Component
 {
     /** @var  int */
     public $client_id;
-
-    /** @var  string */
-    public $code;
 
     /** @var  string */
     public $redirect_uri;
@@ -49,16 +46,9 @@ class YMComponent extends Component
             throw new InvalidConfigException("Client_id can't be empty!");
         }
 
-        if (!$this->code) {
-            throw new InvalidConfigException("Code can't be empty!");
-        }
-
         if (!$this->redirect_uri) {
             throw new InvalidConfigException("Redirect_uri can't be empty!");
         }
-
-        $access_token = API::getAccessToken($this->client_id,$this->code,$this->redirect_uri, $this->client_secret);
-        $this->api = new API($access_token);
     }
 
     /**
@@ -66,6 +56,26 @@ class YMComponent extends Component
      */
     public function getYm()
     {
+        $access_token = API::getAccessToken($this->client_id,$this->code,$this->redirect_uri, $this->client_secret);
+        $this->api = new API($access_token);
+
         return $this->api;
+    }
+
+    /**
+     * undocumented function
+     *
+     * @return void
+     */
+    public function getCode()
+    {
+        $scope = [
+            "account-info",
+            "payment-p2p",
+            "payment-shop",
+        ];
+        $auth_url = API::buildObtainTokenUrl($this->client_id, $this->redirect_uri, $scope);
+
+        return $auth_url;
     }
 }

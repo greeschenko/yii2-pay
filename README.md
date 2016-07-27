@@ -49,7 +49,6 @@ add to you app config in module section
             'ymmoney'=>[
                 'class'=>'greeschenko\pay\components\YMmoney',
                 'client_id'=>'YOUR_YANDEXMONEY_CLIENT_ID',
-                'code'=>'YOUR_YANDEXMONEY_CLIENT_CODE',
                 'client_secret'=>'YOUR_YANDEXMONEY_CLIENT_SECRET',
                 'redirect_uri'=>'/example/action3', //success action
                 'to'=>'', //acount number, phone or email

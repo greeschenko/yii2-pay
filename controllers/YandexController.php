@@ -18,7 +18,8 @@ class YandexController extends Controller
 
     public function actionIndex($amount_due,$comment,$message,$label)
     {
-        $ym = $this->module->ymmoney;
+        echo $ym = $this->module->ymmoney->getCode();
+        die;
 
         $requestPayment = $ym->requestPayment([
             'pattern_id' => 'p2p',
